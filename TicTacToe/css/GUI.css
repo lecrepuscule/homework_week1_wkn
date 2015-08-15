@@ -1,0 +1,33 @@
+.square {
+  width: 100px;
+  height: 100px;
+  margin: auto auto;
+  border: 1px solid black;
+  display:inline-block;
+}
+
+.row {
+  text-align: center;
+  background-size: cover;
+}
+
+.container {
+  height: 100%;
+  margin: 150px;
+  border: 2px solid violet;
+}
+
+.xo {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url("../images/x.png");
+}
+
+/*.o {  
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  display: none;
+  background: url("../images/o.png");
+}*/
