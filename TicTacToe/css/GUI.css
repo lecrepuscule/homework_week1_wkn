@@ -6,15 +6,11 @@
   display:inline-block;
 }
 
-.row {
-  text-align: center;
-  background-size: cover;
-}
-
-.container {
+.board {
   height: 100%;
   margin: 150px;
   border: 2px solid violet;
+  text-align: center;
 }
 
 .o {
