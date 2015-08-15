@@ -12,7 +12,9 @@ for (i=0; i<grid.length; i++) {
   grid[i].addEventListener("click", function(){
       if (this.getElementsByClassName("empty")[0]) {
       var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
-      this.getElementsByClassName("empty")[0].className = markSquare(position);
+      var currentPlayer = markSquare(position)
+      this.getElementsByClassName("empty")[0].className = currentPlayer;
+      checkConnection(position, currentPlayer, 3);
       }
   })
 }
@@ -46,19 +48,63 @@ function playGame() {
 function markSquare (position) {
   currentPlayer = nextPlayer || currentPlayer;
   nextPlayer = nextPlayer === player2 ? player1 : player2;
-  board[parseInt(position[0])][parseInt(position[1])] = currentPlayer;
+  board[position[0]][position[1]] = currentPlayer;
   return currentPlayer;
 }
 
-function findWinner() {
-
+function countConnections(currentPlayer,row, rIncrement, column, cIncrement, currentCount) {
+  if (board[row+rIncrement][column+cIncrement] === currentPlayer) { currentCount.push([row+rIncrement,column+cIncrement])
+  } 
+  else {
+    currentCount = [];
+  }
+  return currentCount;
 }
 
-function countConnection(position) {
+function checkConnection(position, currentPlayer, winCondition) {
 
+  var horizontalConnections=[];
+  var verticalConnections=[];
+  var leadDiagConnections=[];
+  var antiDiagConnections=[];
+  var row = position[0];
+  var column = position[1];
+
+  for (i=1-winCondition; i<winCondition; i++) {
+    if (column+i >= 0 && column+i < 3) {
+      horizontalConnections = countConnections(currentPlayer, row, 0, column, i, horizontalConnections);
+      if (row+i >= 0 && row+i < 3) {
+        leadDiagConnections = countConnections(currentPlayer, row, i, column, i, leadDiagConnections);
+      }
+      if (row-i >= 0 && row-i < 3) {
+        antiDiagConnections = countConnections(currentPlayer, row, -i, column, i, antiDiagConnections);
+      }
+    }
+
+    if (row+i >= 0 && row+i < 3) {
+      verticalConnections = countConnections(currentPlayer, row, i, column, 0, antiDiagConnections);
+    }
+  }
+
+  winner = findWinner([horizontalConnections, verticalConnections, leadDiagConnections, antiDiagConnections], currentPlayer, winCondition);
+
+  if (winner) {
+    console.log(winner + "won!");
+  }
 }
 
-
+function findWinner(connections, currentPlayer, winCondition) {
+  var winner;
+  connections.forEach(function(value){
+    if (value.length >= winCondition) {
+      value.forEach ( function(winSpot) {
+        board[winSpot[0]][winSpot[1]] = currentPlayer + "w";
+      })
+      winner = currentPlayer;
+    } 
+  })
+  return winner;
+}
 
 
 // function setupPlayers() {
