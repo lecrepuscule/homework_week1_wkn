@@ -22,7 +22,6 @@
   height: 100px;
   background-size: cover;
   background-image: url("../images/o.png");
-  display: block;
 }
 
 .x {
@@ -30,13 +29,4 @@
   height: 100px;
   background-size: cover;
   background-image: url("../images/x.png");
-  display: none;
 }
-
-/*.o {  
-  width: 100px;
-  height: 100px;
-  background-size: cover;
-  display: none;
-  background: url("../images/o.png");
-}*/
