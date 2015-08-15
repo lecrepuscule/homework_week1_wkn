@@ -1,0 +1,16 @@
+.square {
+  width: 100px;
+  height: 100px;
+  margin: auto auto;
+  border: 1px solid black;
+  display:inline-block;
+}
+
+.row {
+  text-align: center;
+  background-size: cover;
+}
+
+.container {
+  height: 100%;
+}
