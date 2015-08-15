@@ -17,11 +17,20 @@
   border: 2px solid violet;
 }
 
-.xo {
+.o {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url("../images/o.png");
+  display: block;
+}
+
+.x {
   width: 100px;
   height: 100px;
   background-size: cover;
   background-image: url("../images/x.png");
+  display: none;
 }
 
 /*.o {  
