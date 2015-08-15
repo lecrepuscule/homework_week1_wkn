@@ -10,7 +10,10 @@ var grid = document.getElementsByClassName("square");
 
 for (i=0; i<grid.length; i++) {
   grid[i].addEventListener("click", function(){
-    this.getElementsByClassName("empty")[0].className = markSquare(this.id.split("-"));
+      if (this.getElementsByClassName("empty")[0]) {
+      var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
+      this.getElementsByClassName("empty")[0].className = markSquare(position);
+      }
   })
 }
 
@@ -33,12 +36,29 @@ function playGame() {
   endGame();
 }
 
+// function runGame(position) {
+//   var row = parseInt(position[0]);
+//   var column = parseInt(position[1]);
+//   markSquare();
+// }
+
+
 function markSquare (position) {
   currentPlayer = nextPlayer || currentPlayer;
   nextPlayer = nextPlayer === player2 ? player1 : player2;
   board[parseInt(position[0])][parseInt(position[1])] = currentPlayer;
   return currentPlayer;
 }
+
+function findWinner() {
+
+}
+
+function countConnection(position) {
+
+}
+
+
 
 
 // function setupPlayers() {
@@ -53,7 +73,7 @@ function markSquare (position) {
 
 // function runGame(){
 //   markSquare();
-//   checkWinCondition();
+//   findWinner();
 // }
 
 // function endGame(){
