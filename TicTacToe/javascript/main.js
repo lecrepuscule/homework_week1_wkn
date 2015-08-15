@@ -4,7 +4,7 @@ var player1 = "x";
 var player2 = "o";
 var currentPlayer = player1;
 var nextPlayer;
-var board=[[]];
+var board=[];
 
 var grid = document.getElementsByClassName("square");
 
@@ -16,11 +16,14 @@ for (i=0; i<grid.length; i++) {
 
 function setupBoard(maxRow, maxColumn){
   for (r = 0; r < maxRow; r++) {
+    board.push([]);
     for (c = 0; c < maxColumn; c++) {
       board[r][c] = "";
     }
   }
 }
+
+setupBoard(3,3);
 //init game section//
 
 
@@ -33,11 +36,7 @@ function playGame() {
 function markSquare (position) {
   currentPlayer = nextPlayer || currentPlayer;
   nextPlayer = nextPlayer === player2 ? player1 : player2;
-  var r = parseInt(position[0]);
-  var c = parseInt(position[0]);
-  console.log(currentPlayer);
-  board[r][c] = currentPlayer;
-  console.log(board);
+  board[parseInt(position[0])][parseInt(position[1])] = currentPlayer;
   return currentPlayer;
 }
 
