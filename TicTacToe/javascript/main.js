@@ -9,14 +9,15 @@ var board=[];
 var grid = document.getElementsByClassName("square");
 
 for (i=0; i<grid.length; i++) {
-  grid[i].addEventListener("click", function(){
-      if (this.getElementsByClassName("empty")[0]) {
-      var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
-      var currentPlayer = markSquare(position)
-      this.getElementsByClassName("empty")[0].className = currentPlayer;
-      checkConnection(position, currentPlayer, 3);
-      }
-  })
+  grid[i].addEventListener("click", playGame);
+  // {
+  //     if (this.getElementsByClassName("empty")[0]) {
+  //     var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
+  //     var currentPlayer = markSquare(position)
+  //     this.getElementsByClassName("empty")[0].className = currentPlayer;
+  //     checkConnection(position, currentPlayer, 3);
+  //     }
+  // })
 }
 
 function setupBoard(maxRow, maxColumn){
@@ -33,9 +34,12 @@ setupBoard(3,3);
 
 
 function playGame() {
-  setupGame();
-  runGame();
-  endGame();
+  if (this.getElementsByClassName("empty")[0]) {
+  var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
+  var currentPlayer = markSquare(position)
+  this.getElementsByClassName("empty")[0].className = currentPlayer;
+  checkConnection(position, currentPlayer, 3);
+  }
 }
 
 // function runGame(position) {
@@ -82,7 +86,7 @@ function checkConnection(position, currentPlayer, winCondition) {
     }
 
     if (row+i >= 0 && row+i < 3) {
-      verticalConnections = countConnections(currentPlayer, row, i, column, 0, antiDiagConnections);
+      verticalConnections = countConnections(currentPlayer, row, i, column, 0, verticalConnections);
     }
   }
 
