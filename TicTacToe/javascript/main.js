@@ -8,16 +8,8 @@ var board=[];
 
 var grid = document.getElementsByClassName("square");
 
-for (i=0; i<grid.length; i++) {
+for (var i=0, len=grid.length; i<len; i++) {
   grid[i].addEventListener("click", playGame);
-  // {
-  //     if (this.getElementsByClassName("empty")[0]) {
-  //     var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
-  //     var currentPlayer = markSquare(position)
-  //     this.getElementsByClassName("empty")[0].className = currentPlayer;
-  //     checkConnection(position, currentPlayer, 3);
-  //     }
-  // })
 }
 
 function setupBoard(maxRow, maxColumn){
@@ -35,11 +27,21 @@ setupBoard(3,3);
 
 function playGame() {
   if (this.getElementsByClassName("empty")[0]) {
-  var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
-  var currentPlayer = markSquare(position)
-  this.getElementsByClassName("empty")[0].className = currentPlayer;
-  checkConnection(position, currentPlayer, 3);
+    var position = [parseInt(this.id.split("-")[0]), parseInt(this.id.split("-")[1])];
+    var currentPlayer = markSquare(position)
+    this.getElementsByClassName("empty")[0].className = currentPlayer;
+    var winner = checkConnection(position, currentPlayer, 3);
+    if (winner) {
+      endGame(winner);
+    }
   }
+}
+
+function endGame(winner) {
+  for (var i=0, len=grid.length; i<len; i++) {
+    grid[i].removeEventListener("click", playGame);
+  }
+  alert(winner + " has won!");
 }
 
 // function runGame(position) {
@@ -90,11 +92,9 @@ function checkConnection(position, currentPlayer, winCondition) {
     }
   }
 
-  winner = findWinner([horizontalConnections, verticalConnections, leadDiagConnections, antiDiagConnections], currentPlayer, winCondition);
+  var winner = findWinner([horizontalConnections, verticalConnections, leadDiagConnections, antiDiagConnections], currentPlayer, winCondition);
 
-  if (winner) {
-    console.log(winner + "won!");
-  }
+  return winner ? winner : null;
 }
 
 function findWinner(connections, currentPlayer, winCondition) {
