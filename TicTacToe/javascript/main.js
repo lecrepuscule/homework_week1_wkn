@@ -1,17 +1,27 @@
 
 //init game section//
 
-runGame();
+runGame("x");
 
-function runGame() {
-  var maxRow = prompt("number of rows");
-  var maxColumn = prompt("number of columns");
-  var winCondition = prompt("how many connections to win");
-  var player1 = prompt("who goes first? x/o");
+function runGame(computer) {
+  // var maxRow = prompt("number of rows");
+  // var maxColumn = prompt("number of columns");
+  // var winCondition = prompt("how many connections to win");
+  // var player1 = prompt("who goes first? x/o");
+
+  var maxRow = 3;
+  var maxColumn = 3;
+  var winCondition= 3;
+  var player1="o";
   var board=[];
+
   board = setupBoard(maxRow,maxColumn,board);
   initBoard(maxRow,maxColumn);
   setClickEvents(player1, board, winCondition);
+  
+  if (computer) {
+    firstMove(maxRow, maxColumn, computer, board);
+  }
 }
 
 function setClickEvents(currentPlayer, board, winCondition) {
@@ -71,6 +81,7 @@ function initBoard(maxRow, maxColumn){
       newSquare.setAttribute("id", r+"-"+c);
       newContent = document.createElement("div");
       newContent.setAttribute("class", "empty");
+      newContent.setAttribute("id", r+"-"+c+"-content");
       newSquare.appendChild(newContent);
       newRow.appendChild(newSquare);
     }
@@ -185,5 +196,17 @@ function findWinner(connections, currentPlayer, winCondition, board) {
   return winner;
 }
 
+////////some trial AI functions///////
+function firstMove(maxRow, maxColumn, computer, board){
+  var position = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
+  var centreSquare = document.getElementById(position[0]+"-"+position[1]+"-content");
+  if (centreSquare.className === "empty") {
+    centreSquare.className = computer;
+    board[position[0]][position[1]] = computer;
+  }
+  else {
+    document.getElementById((position[0]-1)+"-"+(position[1]-1)+"-content").className = computer;
+  }
+}
 
 
