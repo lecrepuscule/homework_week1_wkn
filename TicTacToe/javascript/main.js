@@ -277,6 +277,29 @@ function findSecondMove(playerMove, computer, board) {
   makeMove(move, computer, board);
 }
 
+// function findNextMove(){
+
+// }
+
+// function findConnections(connections, winCondition, board) {
+//   var blocker;
+//   var opportunity;
+
+//   connections.forEach(function(value){
+//     if (value.length >= (winCondition - 1)) {
+//       value.forEach ( function(winSpot) {
+//         board[winSpot[0]][winSpot[1]] = currentPlayer + "wins";
+//         getContent(winSpot).className = currentPlayer + "wins";
+//       })
+//       winner = currentPlayer;
+//     } 
+//     // else if (document.getElementsByClassName("empty").length < 1) {
+//     //   winner = "draw";
+//     // }
+//   })
+//   return winner;
+// }
+
 /*
 1. corner
 2. if center -- corner opposite first move, proceed with algorithm
