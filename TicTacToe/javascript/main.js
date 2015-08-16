@@ -4,14 +4,17 @@
 runGame();
 
 function runGame() {
+  var maxRow = 6;
+  var maxColumn = 6;
+  var winCondition = 3;
   var player1 = "x";
-  board=[];
-  board = setupBoard(4,4,board);
-  initBoard(4,4);
-  setClickEvents(player1, board);
+  var board=[];
+  board = setupBoard(maxRow,maxColumn,board);
+  initBoard(maxRow,maxColumn);
+  setClickEvents(player1, board, winCondition);
 }
 
-function setClickEvents(currentPlayer, board) {
+function setClickEvents(currentPlayer, board, winCondition) {
   var grid = document.getElementsByClassName("square");
   for (var i=0, len=grid.length; i<len; i++) {
     grid[i].addEventListener("click", function(){
@@ -20,7 +23,7 @@ function setClickEvents(currentPlayer, board) {
         // currentPlayer = markSquare(position, board, currentPlayer);
         this.getElementsByClassName("empty")[0].className = currentPlayer;
         board[position[0]][position[1]] = currentPlayer;
-        var winner = checkConnection(position, currentPlayer, 3, board);
+        var winner = checkConnection(position, currentPlayer, winCondition, board);
         if (winner) {
           endGame(winner, grid);
         }
@@ -116,7 +119,8 @@ function markSquare (position, board, currentPlayer) {
 }
 
 function countConnections(currentPlayer,row, rIncrement, column, cIncrement, currentCount, board) {
-  if (board[row+rIncrement][column+cIncrement] === currentPlayer) { currentCount.push([row+rIncrement,column+cIncrement])
+  if (board[row+rIncrement][column+cIncrement] === currentPlayer) { 
+    currentCount.push([row+rIncrement,column+cIncrement])
   } 
   else {
     currentCount = [];
@@ -132,26 +136,34 @@ function checkConnection(position, currentPlayer, winCondition, board) {
   var antiDiagConnections=[];
   var row = position[0];
   var column = position[1];
+  var maxRow = board.length;
+  var maxColumn = board[0].length;
+  var winner;
 
   for (i=1-winCondition; i<winCondition; i++) {
-    if (column+i >= 0 && column+i < 3) {
+    if (column+i >= 0 && column+i < maxColumn) {
       horizontalConnections = countConnections(currentPlayer, row, 0, column, i, horizontalConnections, board);
-      if (row+i >= 0 && row+i < 3) {
+      if (row+i >= 0 && row+i < maxRow) {
         leadDiagConnections = countConnections(currentPlayer, row, i, column, i, leadDiagConnections, board);
       }
-      if (row-i >= 0 && row-i < 3) {
+      if (row-i >= 0 && row-i < maxRow) {
         antiDiagConnections = countConnections(currentPlayer, row, -i, column, i, antiDiagConnections, board);
       }
     }
 
-    if (row+i >= 0 && row+i < 3) {
+    if (row+i >= 0 && row+i < maxRow) {
       verticalConnections = countConnections(currentPlayer, row, i, column, 0, verticalConnections, board);
     }
+
+    var winner = findWinner([horizontalConnections, verticalConnections, leadDiagConnections, antiDiagConnections], currentPlayer, winCondition, board);
+    
+    if (winner) {
+      return winner;
+    }
+    else {
+      continue;
+    }
   }
-
-  var winner = findWinner([horizontalConnections, verticalConnections, leadDiagConnections, antiDiagConnections], currentPlayer, winCondition, board);
-
-  return winner ? winner : null;
 }
 
 function findWinner(connections, currentPlayer, winCondition, board) {
