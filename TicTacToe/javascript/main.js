@@ -20,7 +20,7 @@ function runGame(computer) {
   setClickEvents(player1, board, winCondition);
   
   if (computer) {
-    findFirstMove(maxRow, maxColumn, computer, board);
+    findFirstMove(computer, board);
   }
 }
 
@@ -38,6 +38,11 @@ function setClickEvents(currentPlayer, board, winCondition) {
           endGame(winner, grid);
         }
         currentPlayer = currentPlayer === "x" ? "o" : "x";
+
+        // if (document.getElementsByClassName("empty").length === 7) {
+        //   findSecondMove(position, currentPlayer, board);
+        // }
+        // currentPlayer = currentPlayer === "x" ? "o" : "x";
       }
     });
   }
@@ -60,28 +65,43 @@ function setupBoard(maxRow, maxColumn, board){
   return board;
 }
 
+function divGenerator (className, id, name) {
+  var newDiv = document.createElement("div");
+  newDiv.setAttribute("class", className);
+  if (id) {
+    newDiv.setAttribute("id", id);
+  }
+  if (name) {
+    newDiv.setAttribute("name", name);
+  }
+  return newDiv;
+}
 
 //maybe create a "div factory" that takes in attributes and generate elements//
 function initBoard(maxRow, maxColumn){
   var container = document.getElementsByClassName("container")[0];
   var board = document.getElementsByClassName("board")[0];
   container.removeChild(board);
-  board = document.createElement("div");
-  board.setAttribute("class", "board")
+  board = divGenerator("board");
+  // board = document.createElement("div");
+  // board.setAttribute("class", "board");
 
   var newRow;
   var newSquare;
   for (r=0; r<maxRow; r++) {
-    newRow = document.createElement("div");
-    newRow.setAttribute("class", "row");
-    newRow.setAttribute("id", "row"+r);
+    newRow = divGenerator("row", "row"+r);
+    // newRow = document.createElement("div");
+    // newRow.setAttribute("class", "row");
+    // newRow.setAttribute("id", "row"+r);
     for (c=0; c<maxColumn; c++) {
-      newSquare = document.createElement("div");
-      newSquare.setAttribute("class", "square");
-      newSquare.setAttribute("id", r+"-"+c);
-      newContent = document.createElement("div");
-      newContent.setAttribute("class", "empty");
-      newContent.setAttribute("id", r+"-"+c+"-content");
+      newSquare = divGenerator("square", r+"-"+c);
+      newContent = divGenerator("empty", r+"-"+c+"-content");
+      // newSquare = document.createElement("div");
+      // newSquare.setAttribute("class", "square");
+      // newSquare.setAttribute("id", r+"-"+c);
+      // newContent = document.createElement("div");
+      // newContent.setAttribute("class", "empty");
+      // newContent.setAttribute("id", r+"-"+c+"-content");
       newSquare.appendChild(newContent);
       newRow.appendChild(newSquare);
     }
@@ -213,6 +233,10 @@ function findWinner(connections, currentPlayer, winCondition, board) {
 //   }
 // }
 
+corners = [[0,0], [0,2], [2,2], [2,0]];
+sides = [[0,1], [1,2], [2,1], [1,0]];
+centre = [1,1];
+
 function getContent(position){
   return document.getElementById([position[0], position[1], "content"].join("-"));
 }
@@ -222,8 +246,29 @@ function makeMove(position, computer, board){
   board[position[0]][position[1]] = computer;
 }
 
-function findFirstMove(maxRow, maxColumn, computer, board){
-  var centrePosition = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
-  var move = getContent(centrePosition).className === "empty" ? centrePosition : [centrePosition-1, centrePosition[1]-1];
+function findFirstMove(computer, board){
+    var move = [0,0];
     makeMove(move, computer, board);
+    return move;
+
 }
+
+// function findSecondMove(playerMove, computer, board) {
+//   var move;
+//   debugger;
+//   if (playerMove[1] === playerMove[0] === 1) {
+//       move = [2,2];
+//     }
+//   }
+//   else if (playerMove[0]) {
+//     move = playerMove[0] === 1? [0,2] : [2,0];
+//   }
+//   else {
+//         for (i=1; i<4; i++) {
+//       if (i !== corners.indexOf(playerMove)) {
+//         move = corners[i];
+//         break;
+//       }
+//   }
+//   makeMove(move, computer, board);
+// }
