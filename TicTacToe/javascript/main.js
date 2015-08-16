@@ -178,6 +178,9 @@ function checkConnection(position, currentPlayer, winCondition, board) {
       continue;
     }
   }
+  if (document.getElementsByClassName("empty").length < 1) {
+      return winner = "draw";
+  }
 }
 
 function findWinner(connections, currentPlayer, winCondition, board) {
@@ -190,9 +193,9 @@ function findWinner(connections, currentPlayer, winCondition, board) {
       })
       winner = currentPlayer;
     } 
-    else if (document.getElementsByClassName("empty").length < 1) {
-      winner = "draw";
-    }
+    // else if (document.getElementsByClassName("empty").length < 1) {
+    //   winner = "draw";
+    // }
   })
   return winner;
 }
