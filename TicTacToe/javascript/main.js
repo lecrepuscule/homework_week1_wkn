@@ -12,6 +12,7 @@ function runGame() {
     var maxColumn = 3;
     var winCondition= 3;
     var player1="o";
+    var AIMode = "x";
   }
   else {
     var maxRow = prompt("number of rows");
@@ -19,11 +20,11 @@ function runGame() {
     var winCondition = prompt("how many connections to win");
     var player1 = prompt("who goes first? x/o");
   }
-  
+
   var board=[];
   board = setupBoard(maxRow,maxColumn,board);
   initBoard(maxRow,maxColumn);
-  setClickEvents(player1, board, winCondition);
+  setClickEvents(player1, board, winCondition, AIMode);
   
   if (AIMode) {
     findFirstMove(AIMode, board);
@@ -46,6 +47,7 @@ function setClickEvents(currentPlayer, board, winCondition, AIMode) {
         currentPlayer = currentPlayer === "x" ? "o" : "x";
 
         if (AIMode) {
+
           if (document.getElementsByClassName("empty").length === 7) {
             findSecondMove(position, currentPlayer, board);
           }
@@ -56,12 +58,6 @@ function setClickEvents(currentPlayer, board, winCondition, AIMode) {
   }
 }
 
-// function initGame() {
-//   maxRow = prompt("number of rows");
-//   maxColumn = prompt("number of columns");
-//   winCondition = prompt("how many connections to win");
-//   player1 = prompt("who goes first? x/o");
-// }
 
 function setupBoard(maxRow, maxColumn, board){
   for (r = 0; r < maxRow; r++) {
@@ -85,31 +81,30 @@ function divGenerator (className, id, name) {
   return newDiv;
 }
 
-//maybe create a "div factory" that takes in attributes and generate elements//
 function initBoard(maxRow, maxColumn){
   var container = document.getElementsByClassName("container")[0];
   var board = document.getElementsByClassName("board")[0];
   container.removeChild(board);
   board = divGenerator("board");
-  // board = document.createElement("div");
-  // board.setAttribute("class", "board");
 
   var newRow;
   var newSquare;
+  var name;
   for (r=0; r<maxRow; r++) {
     newRow = divGenerator("row", "row"+r);
-    // newRow = document.createElement("div");
-    // newRow.setAttribute("class", "row");
-    // newRow.setAttribute("id", "row"+r);
     for (c=0; c<maxColumn; c++) {
+      if ((c === 0 && r === 0) || ((c === (maxColumn - 1)) && (r === (maxRow - 1))) || (c === 0 && r === (maxRow-1)) || (c=== (maxColumn -1) && r === 0))
+      {
+        name = "corner";
+      }
+      else if (c === 0 || r === 0 || c === (maxColumn -1) || r === (maxRow-1)) {
+        name = "side";
+      }
+      else {
+        name = "centre";
+      }
       newSquare = divGenerator("square", r+"-"+c);
-      newContent = divGenerator("empty", r+"-"+c+"-content");
-      // newSquare = document.createElement("div");
-      // newSquare.setAttribute("class", "square");
-      // newSquare.setAttribute("id", r+"-"+c);
-      // newContent = document.createElement("div");
-      // newContent.setAttribute("class", "empty");
-      // newContent.setAttribute("id", r+"-"+c+"-content");
+      newContent = divGenerator("empty", r+"-"+c+"-content", name);
       newSquare.appendChild(newContent);
       newRow.appendChild(newSquare);
     }
@@ -135,7 +130,7 @@ function initBoard(maxRow, maxColumn){
 //       }
 // }
 
-function endGame(winner, grid) {
+function endGame(winner) {
   alert(winner === "draw" ? "It's a draw!" : winner + " has won!");
   if (window.confirm("Would you like to play another game?")) {
     runGame();
@@ -145,11 +140,6 @@ function endGame(winner, grid) {
   }
 }
 
-// function runGame(position) {
-//   var row = parseInt(position[0]);
-//   var column = parseInt(position[1]);
-//   markSquare();
-// }
 
 
 function markSquare (position, board, currentPlayer) {
@@ -261,22 +251,24 @@ function findFirstMove(computer, board){
 
 }
 
-// function findSecondMove(playerMove, computer, board) {
-//   var move;
-//   debugger;
-//   if (playerMove[1] === playerMove[0] === 1) {
-//       move = [2,2];
-//     }
-//   }
-//   else if (playerMove[0]) {
-//     move = playerMove[0] === 1? [0,2] : [2,0];
-//   }
-//   else {
-//         for (i=1; i<4; i++) {
-//       if (i !== corners.indexOf(playerMove)) {
-//         move = corners[i];
-//         break;
-//       }
-//   }
-//   makeMove(move, computer, board);
-// }
+function findSecondMove(playerMove, computer, board) {
+  var move;
+  switch (getContent(playerMove).getAttribute("name")) {
+  case "centre": 
+    move = [2,2];
+    break;
+  case "side":
+    move = playerMove[0] === 1? [0,2] : [2,0];
+    break;
+  case "corner":
+    for (i=1; i<4; i++) {
+      if (corners[i][0] !== playerMove[0] && corners[i][1] !== playerMove[1]) 
+      {
+        move = corners[i];
+        break;
+      }
+  break
+    }
+  }
+  makeMove(move, computer, board);
+}
