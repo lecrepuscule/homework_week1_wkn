@@ -185,7 +185,8 @@ function findWinner(connections, currentPlayer, winCondition, board) {
   connections.forEach(function(value){
     if (value.length >= winCondition) {
       value.forEach ( function(winSpot) {
-        board[winSpot[0]][winSpot[1]] = currentPlayer + "w";
+        board[winSpot[0]][winSpot[1]] = currentPlayer + "wins";
+        getContent(winSpot).className = currentPlayer + "wins";
       })
       winner = currentPlayer;
     } 

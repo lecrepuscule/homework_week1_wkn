@@ -17,6 +17,7 @@ function findFirstMove(maxRow, maxColumn, computer, board){
   var centrePosition = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
   var move = getContent(centrePosition).className === "empty" ? centrePosition : [centrePosition-1, centrePosition[1]-1];
     makeMove(move, computer, board);
+    return move;
     // move = centreSquare.className;
     // board[position[0]][position[1]] = computer;
   // }
