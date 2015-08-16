@@ -4,10 +4,10 @@
 runGame();
 
 function runGame() {
-  var maxRow = 6;
-  var maxColumn = 6;
-  var winCondition = 3;
-  var player1 = "x";
+  var maxRow = prompt("number of rows");
+  var maxColumn = prompt("number of columns");
+  var winCondition = prompt("how many connections to win");
+  var player1 = prompt("who goes first? x/o");
   var board=[];
   board = setupBoard(maxRow,maxColumn,board);
   initBoard(maxRow,maxColumn);
@@ -32,6 +32,13 @@ function setClickEvents(currentPlayer, board, winCondition) {
     });
   }
 }
+
+// function initGame() {
+//   maxRow = prompt("number of rows");
+//   maxColumn = prompt("number of columns");
+//   winCondition = prompt("how many connections to win");
+//   player1 = prompt("who goes first? x/o");
+// }
 
 function setupBoard(maxRow, maxColumn, board){
   for (r = 0; r < maxRow; r++) {
