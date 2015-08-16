@@ -1,30 +1,36 @@
 
 //init game section//
 
-runGame("x");
+runGame();
 
-function runGame(computer) {
-  // var maxRow = prompt("number of rows");
-  // var maxColumn = prompt("number of columns");
-  // var winCondition = prompt("how many connections to win");
-  // var player1 = prompt("who goes first? x/o");
+function runGame() {
 
-  var maxRow = 3;
-  var maxColumn = 3;
-  var winCondition= 3;
-  var player1="o";
+  var AIMode = window.confirm("AIMode?");
+
+  if (AIMode) {
+    var maxRow = 3;
+    var maxColumn = 3;
+    var winCondition= 3;
+    var player1="o";
+  }
+  else {
+    var maxRow = prompt("number of rows");
+    var maxColumn = prompt("number of columns");
+    var winCondition = prompt("how many connections to win");
+    var player1 = prompt("who goes first? x/o");
+  }
+  
   var board=[];
-
   board = setupBoard(maxRow,maxColumn,board);
   initBoard(maxRow,maxColumn);
   setClickEvents(player1, board, winCondition);
   
-  if (computer) {
-    findFirstMove(computer, board);
+  if (AIMode) {
+    findFirstMove(AIMode, board);
   }
 }
 
-function setClickEvents(currentPlayer, board, winCondition) {
+function setClickEvents(currentPlayer, board, winCondition, AIMode) {
   var grid = document.getElementsByClassName("square");
   for (var i=0, len=grid.length; i<len; i++) {
     grid[i].addEventListener("click", function(){
@@ -39,10 +45,12 @@ function setClickEvents(currentPlayer, board, winCondition) {
         }
         currentPlayer = currentPlayer === "x" ? "o" : "x";
 
-        // if (document.getElementsByClassName("empty").length === 7) {
-        //   findSecondMove(position, currentPlayer, board);
-        // }
-        // currentPlayer = currentPlayer === "x" ? "o" : "x";
+        if (AIMode) {
+          if (document.getElementsByClassName("empty").length === 7) {
+            findSecondMove(position, currentPlayer, board);
+          }
+          currentPlayer = currentPlayer === "x" ? "o" : "x";
+        }
       }
     });
   }
