@@ -20,7 +20,7 @@ function runGame(computer) {
   setClickEvents(player1, board, winCondition);
   
   if (computer) {
-    firstMove(maxRow, maxColumn, computer, board);
+    findFirstMove(maxRow, maxColumn, computer, board);
   }
 }
 
@@ -197,16 +197,29 @@ function findWinner(connections, currentPlayer, winCondition, board) {
 }
 
 ////////some trial AI functions///////
-function firstMove(maxRow, maxColumn, computer, board){
-  var position = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
-  var centreSquare = document.getElementById(position[0]+"-"+position[1]+"-content");
-  if (centreSquare.className === "empty") {
-    centreSquare.className = computer;
-    board[position[0]][position[1]] = computer;
-  }
-  else {
-    document.getElementById((position[0]-1)+"-"+(position[1]-1)+"-content").className = computer;
-  }
+// function makeFirstMove(maxRow, maxColumn, computer, board){
+//   var position = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
+//   var centreSquare = document.getElementById(position[0]+"-"+position[1]+"-content");
+//   if (centreSquare.className === "empty") {
+//     centreSquare.className = computer;
+//     board[position[0]][position[1]] = computer;
+//   }
+//   else {
+//     document.getElementById((position[0]-1)+"-"+(position[1]-1)+"-content").className = computer;
+//   }
+// }
+
+function getContent(position){
+  return document.getElementById([position[0], position[1], "content"].join("-"));
 }
 
+function makeMove(position, computer, board){
+  getContent(position).className = computer;
+  board[position[0]][position[1]] = computer;
+}
 
+function findFirstMove(maxRow, maxColumn, computer, board){
+  var centrePosition = [Math.floor(maxRow/2), Math.floor(maxColumn/2)];
+  var move = getContent(centrePosition).className === "empty" ? centrePosition : [centrePosition-1, centrePosition[1]-1];
+    makeMove(move, computer, board);
+}
