@@ -50,6 +50,8 @@ function setupBoard(maxRow, maxColumn, board){
   return board;
 }
 
+
+//maybe create a "div factory" that takes in attributes and generate elements//
 function initBoard(maxRow, maxColumn){
   var container = document.getElementsByClassName("container")[0];
   var board = document.getElementsByClassName("board")[0];
@@ -95,14 +97,8 @@ function initBoard(maxRow, maxColumn){
 // }
 
 function endGame(winner, grid) {
-  // for (var i=0, len=grid.length; i<len; i++) {
-  //   grid[i].removeEventListener("click", playGame);
-  // }
-  if (window.confirm(winner + " has won! would you like to play another game?")) {
-    // console.log(grid);
-    // for (i=0; i<grid.length; i++) {
-    //   grid[i].getElementByType("div")[i].className = "empty";
-    // }
+  alert(winner === "draw" ? "It's a draw!" : winner + " has won!");
+  if (window.confirm("Would you like to play another game?")) {
     runGame();
   } 
   else {
@@ -182,26 +178,12 @@ function findWinner(connections, currentPlayer, winCondition, board) {
       })
       winner = currentPlayer;
     } 
+    else if (document.getElementsByClassName("empty").length < 1) {
+      winner = "draw";
+    }
   })
   return winner;
 }
 
 
-// function setupPlayers() {
-//   player1
-// }
 
-// function setupGame() {
-//  setupPlayers();
-//   setupBoard();
-//   setupWinCondition();
-// }
-
-// function runGame(){
-//   markSquare();
-//   findWinner();
-// }
-
-// function endGame(){
-//   showWinner();
-// }
