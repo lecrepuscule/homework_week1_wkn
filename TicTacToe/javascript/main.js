@@ -233,7 +233,7 @@ function findWinner(connections, currentPlayer, winCondition, board) {
 
 corners = [[0,0], [0,2], [2,2], [2,0]];
 sides = [[0,1], [1,2], [2,1], [1,0]];
-centre = [1,1];
+
 
 function getContent(position){
   return document.getElementById([position[0], position[1], "content"].join("-"));
@@ -253,22 +253,33 @@ function findFirstMove(computer, board){
 
 function findSecondMove(playerMove, computer, board) {
   var move;
+  var nextMove;
   switch (getContent(playerMove).getAttribute("name")) {
   case "centre": 
     move = [2,2];
     break;
   case "side":
     move = playerMove[0] === 1? [0,2] : [2,0];
+    nextMove = [1,1];
     break;
   case "corner":
+    var remainingCorners = [];
     for (i=1; i<4; i++) {
-      if (corners[i][0] !== playerMove[0] && corners[i][1] !== playerMove[1]) 
+      if ((corners[i][0] !== playerMove[0]) || (corners[i][1] !== playerMove[1]))
       {
-        move = corners[i];
-        break;
+        remainingCorners.push(corners[i]);
       }
-  break
     }
+    move = remainingCorners[0];
+    nextMove = remainingCorners[1];
+  break;
   }
   makeMove(move, computer, board);
 }
+
+/*
+1. corner
+2. if center -- corner opposite first move, proceed with algorithm
+3. if corner -- any other corner, then the last
+4. if side -- take corner where opponent blocking doesn't result two in a row. fork
+*/

@@ -3,7 +3,7 @@
 
 var corners = [[0,0], [0,2], [2,2], [2,0]];
 var sides = [[0,1], [1,2], [2,1], [1,0]];
-var centre = [1,1];
+
 
 function getContent(position){
   return document.getElementById([position[0], position[1], "content"].join("-"));
@@ -29,23 +29,29 @@ function findFirstMove(maxRow, maxColumn, computer, board){
   // }
 }
 
-function findSecondMove(playerMove) {
+function findSecondMove(playerMove, computer, board) {
   var move;
-  if (corners.indexOf(playerMove) !== -1) {
+  var nextMove;
+  switch (getContent(playerMove).getAttribute("name")) {
+  case "centre": 
+    move = [2,2];
+    break;
+  case "side":
+    move = playerMove[0] === 1? [0,2] : [2,0];
+    nextMove = [1,1];
+    break;
+  case "corner":
     for (i=1; i<4; i++) {
-      if (i !== corners.indexOf(playerMove)) {
+      if (corners[i][0] !== playerMove[0] && corners[i][1] !== playerMove[1]) 
+      {
         move = corners[i];
         break;
       }
+  break
     }
   }
-  else if (sides.indexOf(playerMove) !== -1) {
-    move = playerMove[0] === 1? [0,2] : [2,0];
-  }
-  else {
-    move = [2,2];
-  }
   makeMove(move, computer, board);
+  return nextMove;
 }
 
 
